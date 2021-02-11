@@ -6,6 +6,7 @@ services:
     volumes:
       - ./logs/nginx/:/var/log/nginx/
       - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+      - ./sslkeys/:/sslkeys/
     #NOTE : TLS key's path for HTTPS
     # - <host ssl_certificate key's path> : <nginx.conf ssl_certificate key's path>
     # - <host ssl_certificate_key key's path> : <nginx.conf  ssl_certificate_key key's path>
