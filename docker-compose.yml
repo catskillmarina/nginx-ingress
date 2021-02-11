@@ -1,0 +1,27 @@
+version: '3'
+services:
+  gb-nginx:
+    image: nginx:1.19.6
+    container_name: gb-nginx
+    volumes:
+      - ./logs/nginx/:/var/log/nginx/
+      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+    #NOTE : TLS key's path for HTTPS
+    # - <host ssl_certificate key's path> : <nginx.conf ssl_certificate key's path>
+    # - <host ssl_certificate_key key's path> : <nginx.conf  ssl_certificate_key key's path>
+    networks:
+      - ingress
+    hostname: nginx
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - gitbucket
+    command: ["nginx", "-g", "daemon off;"]
+    restart: unless-stopped
+networks:
+  ingress:
+    driver: bridge
+
