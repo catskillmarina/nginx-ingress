@@ -1,8 +1,17 @@
 version: '3'
+
+networks:
+  ingress:
+#   driver: bridge
+    external: true
+  keycloak:
+#   driver: bridge
+    external: true
+
 services:
-  gb-nginx:
+  nginx-ingress:
     image: nginx:1.19.6
-    container_name: gb-nginx
+    container_name: nginx-ingress
     volumes:
       - ./logs/nginx/:/var/log/nginx/
       - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
@@ -12,17 +21,15 @@ services:
     # - <host ssl_certificate_key key's path> : <nginx.conf  ssl_certificate_key key's path>
     networks:
       - ingress
+      - keycloak
     hostname: nginx
     ports:
       - "8080:8080"
       - "8443:8443"
       - "80:80"
       - "443:443"
-    depends_on:
-      - gitbucket
+    #depends_on:
+    #  - keycloak
     command: ["nginx", "-g", "daemon off;"]
     restart: unless-stopped
-networks:
-  ingress:
-    driver: bridge
 
